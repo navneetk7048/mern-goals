@@ -1,0 +1,18 @@
+{
+  "name": "mern-goals",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "author": "Navneet Vishwakarma <navneetk7048@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "devStart": "nodemon index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.3.0"
+  }
+}
