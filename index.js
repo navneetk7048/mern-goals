@@ -19,9 +19,12 @@ app.use(express.static("./client/build"));
 app.use("/api/goals", goalRoutes);
 app.use("/api/users", userRoutes);
 
-app.get("*", (req, res) => {
-  res.status(200).send("./client/build/index.html");
-});
+// Serve frontend
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("./client/build"));
+
+  app.get("*", (req, res) => res.sendFile("./client/build/index.html"));
+}
 
 app.use(errorHandler);
 
