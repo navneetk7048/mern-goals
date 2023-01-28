@@ -1,10 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import Action from "../../types/Action";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import SliceAuth from "../../types/SliceAuth";
 import User from "../../types/User";
 import UserLogin from "../../types/UserLogin";
 import UserRegister from "../../types/UserRegister";
-import authService from "./authService";
+import * as authService from "./authService";
 
 // Get user from local storage
 const user: User = JSON.parse(localStorage.getItem("user") || "");
@@ -75,12 +74,12 @@ export const authSlice = createSlice({
       .addCase(register.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(register.fulfilled, (state, action: Action) => {
+      .addCase(register.fulfilled, (state, action: PayloadAction<User>) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
       })
-      .addCase(register.rejected, (state, action: Action) => {
+      .addCase(register.rejected, (state, action: any) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -89,12 +88,12 @@ export const authSlice = createSlice({
       .addCase(login.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(login.fulfilled, (state, action: Action) => {
+      .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
       })
-      .addCase(login.rejected, (state, action: Action) => {
+      .addCase(login.rejected, (state, action: any) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

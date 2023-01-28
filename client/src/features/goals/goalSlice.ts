@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Goal from "../../types/Goal";
 import SliceGoal from "../../types/SliceGoal";
-import goalService from "./goalService";
+import * as goalService from "./goalService";
 
 const initialState: SliceGoal = {
   goals: [],
@@ -14,7 +14,7 @@ const initialState: SliceGoal = {
 // Create a goal
 export const createGoal = createAsyncThunk(
   "goals/create",
-  async (goalData, thunkAPI: any) => {
+  async (goalData: string, thunkAPI: any) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
       return await goalService.createGoal(goalData, token);
@@ -54,7 +54,7 @@ export const getGoals = createAsyncThunk(
 // Delete user goals
 export const deleteGoal = createAsyncThunk(
   "goals/delete",
-  async (id, thunkAPI: any) => {
+  async (id: string, thunkAPI: any) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
       return await goalService.deleteGoal(id, token);

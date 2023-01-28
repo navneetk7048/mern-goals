@@ -1,9 +1,11 @@
 import axios from "axios";
+import UserLogin from "../../types/UserLogin";
+import UserRegister from "../../types/UserRegister";
 
 const API_URL = "http://localhost:5000/users/";
 
 // Register user
-const register = async (userData) => {
+export async function register(userData: UserRegister) {
   const response = await axios.post(API_URL, userData);
 
   if (response.data) {
@@ -11,10 +13,10 @@ const register = async (userData) => {
   }
 
   return response.data;
-};
+}
 
 // Login user
-const login = async (userData) => {
+export async function login(userData: UserLogin) {
   const response = await axios.post(API_URL + "login", userData);
 
   if (response.data) {
@@ -22,13 +24,9 @@ const login = async (userData) => {
   }
 
   return response.data;
-};
+}
 
 // Logout user
-const logout = async () => {
+export async function logout() {
   localStorage.removeItem("user");
-};
-
-const authService = { register, login, logout };
-
-export default authService;
+}
