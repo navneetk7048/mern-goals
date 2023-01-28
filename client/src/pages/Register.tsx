@@ -1,57 +1,51 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { FaUser } from "react-icons/fa";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { register, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
+import { register, reset } from "../features/auth/authSlice";
+import Store from "../types/Store";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password2: "",
-  });
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
-  const { name, email, password, password2 } = formData;
+  const auth = useSelector((state: Store) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
-
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
+    if (auth.isError) {
+      toast.error(auth.message);
     }
 
-    if (isSuccess || user) {
+    if (auth.isSuccess || auth.user) {
       navigate("/");
     }
 
     dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [navigate, dispatch, auth]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (password !== password2) {
-      toast.error("Passwords do not match");
-    } else {
-      const userData = { name, email, password };
+    const name = nameRef.current?.value || "";
+    const email = emailRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
+    const confirmPassword = confirmPasswordRef.current?.value || "";
 
-      dispatch(register(userData));
+    if (password !== confirmPassword) {
+      return toast.error("Passwords do not match");
     }
-  };
 
-  if (isLoading) {
+    dispatch(register({ name, email, password }));
+  }
+
+  if (auth.isLoading) {
     return <Spinner />;
   }
 
@@ -70,44 +64,32 @@ const Register = () => {
             <input
               type="text"
               className="form-control"
-              id="name"
-              name="name"
-              value={name}
               placeholder="Enter your name"
-              onChange={handleChange}
+              ref={nameRef}
             />
           </div>
           <div className="form-group">
             <input
               type="email"
               className="form-control"
-              id="email"
-              name="email"
-              value={email}
               placeholder="Enter your email"
-              onChange={handleChange}
+              ref={emailRef}
             />
           </div>
           <div className="form-group">
             <input
               type="password"
               className="form-control"
-              id="password"
-              name="password"
-              value={password}
               placeholder="Enter password"
-              onChange={handleChange}
+              ref={passwordRef}
             />
           </div>
           <div className="form-group">
             <input
               type="password"
               className="form-control"
-              id="password2"
-              name="password2"
-              value={password2}
               placeholder="Confirm password"
-              onChange={handleChange}
+              ref={confirmPasswordRef}
             />
           </div>
           <div className="form-group">

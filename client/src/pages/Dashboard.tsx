@@ -1,26 +1,25 @@
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import GoalForm from "../components/GoalForm";
+import GoalItem from "../components/GoalItem";
 import Spinner from "../components/Spinner";
 import { getGoals, reset } from "../features/goals/goalSlice";
-import GoalItem from "../components/GoalItem";
+import Store from "../types/Store";
 
-const Dashboard = () => {
+export default function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user } = useSelector(state => state.auth);
-  const { goals, isLoading, isError, message } = useSelector(
-    state => state.goals
-  );
+  const auth = useSelector((state: Store) => state.auth);
+  const goals = useSelector((state: Store) => state.goals);
 
   useEffect(() => {
-    if (isError) {
-      console.log(message);
+    if (auth.isError) {
+      console.log(auth.message);
     }
 
-    if (!user) {
+    if (!auth.user) {
       navigate("/login");
     }
 
@@ -29,25 +28,25 @@ const Dashboard = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, isError, message, dispatch, navigate]);
+  }, [dispatch, navigate, auth]);
 
-  if (isLoading) {
+  if (auth.isLoading) {
     return <Spinner />;
   }
 
   return (
     <>
       <section className="heading">
-        <h1>Welcome {user && user.name}</h1>
+        <h1>Welcome {auth.user && auth.user.name}</h1>
         <p>Goals Dashboard</p>
       </section>
 
       <GoalForm />
 
       <section className="content">
-        {goals.length > 0 ? (
+        {goals.goals.length > 0 ? (
           <div className="goals">
-            {goals.map(goal => (
+            {goals.goals.map((goal) => (
               <GoalItem key={goal._id} goal={goal} />
             ))}
           </div>
@@ -57,6 +56,4 @@ const Dashboard = () => {
       </section>
     </>
   );
-};
-
-export default Dashboard;
+}

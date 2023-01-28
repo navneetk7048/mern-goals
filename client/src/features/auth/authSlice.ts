@@ -3,6 +3,7 @@ import Action from "../../types/Action";
 import Store from "../../types/Store";
 import User from "../../types/User";
 import UserLogin from "../../types/UserLogin";
+import UserRegister from "../../types/UserRegister";
 import authService from "./authService";
 
 // Get user from local storage
@@ -19,7 +20,7 @@ const initialState: Store["auth"] = {
 // Register user
 export const register = createAsyncThunk(
   "auth/register",
-  async (user, thunkAPI) => {
+  async (user: UserRegister, thunkAPI) => {
     try {
       return await authService.register(user);
     } catch (error: any) {

@@ -10,9 +10,11 @@ import Store from "../types/Store";
 export default function Login() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+
+  const auth = useSelector((state: Store) => state.auth);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const auth = useSelector((state: Store) => state.auth);
 
   useEffect(() => {
     if (auth.isError) {
@@ -54,18 +56,16 @@ export default function Login() {
             <input
               type="email"
               className="form-control"
-              id="email"
-              name="email"
               placeholder="Enter your email"
+              ref={emailRef}
             />
           </div>
           <div className="form-group">
             <input
               type="password"
               className="form-control"
-              id="password"
-              name="password"
               placeholder="Enter password"
+              ref={passwordRef}
             />
           </div>
           <div className="form-group">
