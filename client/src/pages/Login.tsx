@@ -1,51 +1,41 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FaSignInAlt } from "react-icons/fa";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { login, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
+import { login, reset } from "../features/auth/authSlice";
+import Store from "../types/Store";
 
-const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const { email, password } = formData;
-
+export default function Login() {
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
+  const auth = useSelector((state: Store) => state.auth);
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
+    if (auth.isError) {
+      toast.error(auth.message);
     }
 
-    if (isSuccess || user) {
+    if (auth.isSuccess || auth.user) {
       navigate("/");
     }
 
     dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [navigate, dispatch, auth]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const userData = { email, password };
+    const email = emailRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
 
-    dispatch(login(userData));
-  };
+    dispatch(login({ email, password }));
+  }
 
-  if (isLoading) {
+  if (auth.isLoading) {
     return <Spinner />;
   }
 
@@ -66,9 +56,7 @@ const Login = () => {
               className="form-control"
               id="email"
               name="email"
-              value={email}
               placeholder="Enter your email"
-              onChange={handleChange}
             />
           </div>
           <div className="form-group">
@@ -77,9 +65,7 @@ const Login = () => {
               className="form-control"
               id="password"
               name="password"
-              value={password}
               placeholder="Enter password"
-              onChange={handleChange}
             />
           </div>
           <div className="form-group">
@@ -91,6 +77,4 @@ const Login = () => {
       </section>
     </>
   );
-};
-
-export default Login;
+}
