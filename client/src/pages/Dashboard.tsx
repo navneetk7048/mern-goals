@@ -5,14 +5,14 @@ import GoalForm from "../components/GoalForm";
 import GoalItem from "../components/GoalItem";
 import Spinner from "../components/Spinner";
 import { getGoals, reset } from "../features/goals/goalSlice";
-import Store from "../types/Store";
+import { RootState } from "../store";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const auth = useSelector((state: Store) => state.auth);
-  const goals = useSelector((state: Store) => state.goals);
+  const auth = useSelector((state: RootState) => state.auth);
+  const goals = useSelector((state: RootState) => state.goals);
 
   useEffect(() => {
     if (auth.isError) {

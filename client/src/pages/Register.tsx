@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 import { register, reset } from "../features/auth/authSlice";
-import Store from "../types/Store";
+import { RootState } from "../store";
 
 const Register = () => {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -13,7 +13,7 @@ const Register = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
-  const auth = useSelector((state: Store) => state.auth);
+  const auth = useSelector((state: RootState) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

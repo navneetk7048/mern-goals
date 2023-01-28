@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 import { login, reset } from "../features/auth/authSlice";
-import Store from "../types/Store";
+import { RootState } from "../store";
 
 export default function Login() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const auth = useSelector((state: Store) => state.auth);
+  const auth = useSelector((state: RootState) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

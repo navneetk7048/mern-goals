@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Action from "../../types/Action";
-import Store from "../../types/Store";
+import SliceAuth from "../../types/SliceAuth";
 import User from "../../types/User";
 import UserLogin from "../../types/UserLogin";
 import UserRegister from "../../types/UserRegister";
@@ -9,7 +9,7 @@ import authService from "./authService";
 // Get user from local storage
 const user: User = JSON.parse(localStorage.getItem("user") || "");
 
-const initialState: Store["auth"] = {
+const initialState: SliceAuth = {
   user: user || null,
   isError: false,
   isSuccess: false,
