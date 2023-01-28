@@ -14,7 +14,7 @@ const initialState: SliceGoal = {
 // Create a goal
 export const createGoal = createAsyncThunk(
   "goals/create",
-  async (goalData: string, thunkAPI: any) => {
+  async (goalData: { text: string }, thunkAPI: any) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
       return await goalService.createGoal(goalData, token);

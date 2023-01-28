@@ -7,7 +7,7 @@ const generateConfig = (token: string) => ({
 });
 
 // Create goal
-export async function createGoal(goalData: string, token: string) {
+export async function createGoal(goalData: { text: string }, token: string) {
   const response = await axios.post(API_URL, goalData, generateConfig(token));
 
   return response.data;

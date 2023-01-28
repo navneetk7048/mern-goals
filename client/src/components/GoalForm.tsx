@@ -10,7 +10,7 @@ const GoalForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    dispatch(createGoal(text));
+    dispatch(createGoal({ text }));
     setText("");
   };
 
