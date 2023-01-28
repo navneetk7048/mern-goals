@@ -9,6 +9,7 @@ import userRoutes from "./routes/userRoutes.js";
 config();
 const app = express();
 const PORT = process.env.PORT || 5000;
+const MONGODB_URL = process.env.MONGODB_URL || "";
 
 app.use(express.json());
 app.use(cors());
@@ -19,7 +20,7 @@ app.use("/users", userRoutes);
 app.use(errorHandler);
 
 mongoose
-  .connect(process.env.MONGODB_URL)
+  .connect(MONGODB_URL)
   .then(() => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })

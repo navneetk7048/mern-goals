@@ -1,4 +1,6 @@
-export const errorHandler = (err, req, res, next) => {
+import { Request, Response } from "express";
+
+export const errorHandler = (err: any, _req: Request, res: Response) => {
   const statusCode = res.statusCode || 500;
 
   res.status(statusCode);
